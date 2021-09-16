@@ -1,9 +1,15 @@
 FROM golang
 
+WORKDIR $GOPATH/src/ulr_shorten
+
 COPY . .
 
-RUN go get github.com/lib/pq
+RUN go mod tidy
 
-ENTRYPOINT ["/"]
+RUN go build -o main .
 
 EXPOSE 8080
+
+ARG DB_PASS
+
+CMD ["./main"]

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"math/rand"
+	"os"
 
 	_ "github.com/lib/pq"
 
@@ -19,7 +20,8 @@ type urls struct {
 type GRPCServer struct{}
 
 func (s *GRPCServer) Create(ctx context.Context, req *__.Request) (*__.Response, error) {
-	connStr := "user=postgres password=password dbname=urlsdb sslmode=disable"
+	password := os.Getenv("DB_PASS")
+	connStr := "user=postgres password=" + password + " dbname=urlsdb sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 
 	if err != nil {
@@ -88,7 +90,8 @@ func (s *GRPCServer) Create(ctx context.Context, req *__.Request) (*__.Response,
 }
 
 func (s *GRPCServer) Get(ctx context.Context, req *__.Response) (*__.Request, error) {
-	connStr := "user=postgres password=password dbname=urlsdb sslmode=disable"
+	password := os.Getenv("DB_PASS")
+	connStr := "user=postgres password=" + password + " dbname=urlsdb sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 
 	if err != nil {
